@@ -51,8 +51,17 @@ public class Polialfabetic {
     }
 
     public static String xifraPoliAlfa(String msg) {
+        return procesaPoliAlfa(msg, abecedari, permutat);
+    }
 
-        StringBuilder xifrat = new StringBuilder();
+    public static String desxifraPoliAlfa(String msgXifrat) {
+        return procesaPoliAlfa(msgXifrat, permutat, abecedari);
+    }
+
+    // Refactoritzat perque el codi sempre es el mateix, nomes canvia quin array es
+    // l'entrada i quin la sortida
+    private static String procesaPoliAlfa(String msg, char[] origen, char[] desti) {
+        StringBuilder text = new StringBuilder();
 
         // Recorrer la cadena
         for (int i = 0; i < msg.length(); i++) {
@@ -63,56 +72,25 @@ public class Polialfabetic {
 
             c = Character.toLowerCase(c); // En qualsevol cas la passo a minuscula per buscar
 
-            int pos = trobarPosicio(abecedari, c); // Busca en quina posició esta la lletra, -1 si no la troba
+            int pos = trobarPosicio(origen, c); // Busca en quina posició esta la lletra, -1 si no la troba
 
             // Si ha trobat la posició
             if (pos != -1) {
                 permutaAlfabet();
 
                 if (esMaj) {
-                    xifrat.append(Character.toUpperCase(permutat[pos])); // Si es majuscula afegirlo com a tal
+                    text.append(Character.toUpperCase(desti[pos])); // Si es majuscula afegirlo com a tal
                 } else {
-                    xifrat.append(permutat[pos]);
+                    text.append(desti[pos]);
                 }
             } else {
-                xifrat.append(c); // Afegir el caracter tal cual, pels espais i altres signes
+                text.append(c); // Afegir el caracter tal cual, pels espais i altres signes
             }
         }
-        return xifrat.toString();
+        return text.toString();
     }
 
-    public static String desxifraPoliAlfa(String msgXifrat) {
-
-        StringBuilder desxifrat = new StringBuilder();
-
-        // Recorrer la cadena xifrada
-        for (int i = 0; i < msgXifrat.length(); i++) {
-            char c = msgXifrat.charAt(i); // Guardo la lletra actual
-
-            // Comprovar si la lletra es majúscula
-            boolean esMaj = Character.isUpperCase(c);
-
-            c = Character.toLowerCase(c); // En qualsevol cas la passo a minuscula per buscar
-
-            int pos = trobarPosicio(permutat, c); // Busca en quina posició esta la lletra, -1 si no la troba
-
-            // Si ha trobat la posició
-            if (pos != -1) {
-                permutaAlfabet();
-
-                if (esMaj) {
-                    desxifrat.append(Character.toUpperCase(abecedari[pos])); // Si es majuscula afegirlo com a tal
-                } else {
-                    desxifrat.append(abecedari[pos]);
-                }
-            } else {
-                desxifrat.append(c); // Afegir el caracter tal cual, pels espais i altres signes
-            }
-        }
-        return desxifrat.toString();
-
-    }
-
+    // Inicialitza el Random
     private static void initRandom(int password) {
         semilla = new Random(password); // Utilitzar la contrasenya com a semilla
     }
