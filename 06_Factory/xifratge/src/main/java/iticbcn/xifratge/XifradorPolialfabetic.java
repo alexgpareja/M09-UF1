@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class XifradorPolialfabetic {
+public class XifradorPolialfabetic implements Xifrador {
 
     public static final char[] abecedari = "aàáäâãbcçdeèéëêfghiìíïîjklmnñoòóöôõpqrstuùúüûvwxyýÿz".toCharArray();
 
@@ -85,6 +85,28 @@ public class XifradorPolialfabetic {
             }
         }
         return -1; // Si no es troba
+    }
+
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        clauCorrecta(clau);
+        initRandom(Integer.parseInt(clau));
+        return new TextXifrat(xifraPoliAlfa(msg).getBytes());
+    }
+
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        clauCorrecta(clau);
+        initRandom(Integer.parseInt(clau));
+        return desxifraPoliAlfa(xifrat.toString());
+    }
+
+    private void clauCorrecta(String clau) throws ClauNoSuportada {
+        try {
+            long clauLong = Long.parseLong(clau);
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau de Polialfabètic ha de ser un String convertible a long");
+        }
     }
 
 }

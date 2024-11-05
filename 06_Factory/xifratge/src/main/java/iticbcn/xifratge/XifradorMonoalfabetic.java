@@ -33,7 +33,7 @@ public class XifradorMonoalfabetic implements Xifrador {
         return permutat;
     }
 
-    public String xifraMonoAlfa(String cadena) {
+    public String xifraMonoAlfa(String cadena, char[] permutat) {
         StringBuilder cadenaXifrada = new StringBuilder();
 
         // Recorrer la cadena a xifrar
@@ -69,7 +69,7 @@ public class XifradorMonoalfabetic implements Xifrador {
         return cadenaXifrada.toString();
     }
 
-    public String desxifraMonoAlfa(String cadena) {
+    public String desxifraMonoAlfa(String cadena, char[] permutat) {
         StringBuilder cadenaDesxifrada = new StringBuilder();
 
         for (int i = 0; i < cadena.length(); i++) {
@@ -125,14 +125,18 @@ public class XifradorMonoalfabetic implements Xifrador {
 
     @Override
     public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'xifra'");
+        if (clau != null) {
+            throw new ClauNoSuportada("Xifratxe monoalfabètic no suporta clau != null");
+        }
+        return new TextXifrat(xifraMonoAlfa(msg, permutat).getBytes());
     }
 
     @Override
     public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'desxifra'");
+        if (clau != null) {
+            throw new ClauNoSuportada("Xifratxe monoalfabètic no suporta clau != null");
+        }
+        return desxifraMonoAlfa(xifrat.toString(), permutat);
     }
 
 }

@@ -1,6 +1,6 @@
 package iticbcn.xifratge;
 
-public class XifradorRotX {
+public class XifradorRotX implements Xifrador {
 
     public static final char[] lletresMin = "aàáäâãbcçdeèéëêfghiìíïîjklmnñoòóöôõpqrstuùúüûvwxyýÿz".toCharArray();
 
@@ -8,7 +8,7 @@ public class XifradorRotX {
 
     public int rot = 0;
 
-    public String xifraRotX(String cadena) {
+    public String xifraRotX(String cadena, int rot) {
 
         StringBuilder cadenaXifrada = new StringBuilder();
 
@@ -49,7 +49,7 @@ public class XifradorRotX {
         return cadenaXifrada.toString();
     }
 
-    public String desxifraRotX(String cadena) {
+    public String desxifraRotX(String cadena, int rot) {
         StringBuilder cadenaDesxifrada = new StringBuilder();
 
         // Recorrer la cadena
@@ -92,8 +92,37 @@ public class XifradorRotX {
     public void forcaBrutaRotX(String cadenaXifrada) {
         for (int i = 1; i < lletresMin.length; i++) {
             rot = i;
-            System.out.println("Desplaçament " + rot + ": " + desxifraRotX(cadenaXifrada));
+            System.out.println("Desplaçament " + rot + ": " + desxifraRotX(cadenaXifrada, rot));
         }
+    }
+
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        clauCorrecta(clau);
+        int clauValue = convertirClauAInt(clau);
+        return new TextXifrat(xifraRotX(msg, clauValue).getBytes());
+    }
+
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        clauCorrecta(clau);
+        int clauValue = convertirClauAInt(clau);
+        return desxifraRotX(xifrat.toString(), clauValue);
+    }
+
+    private void clauCorrecta(String clau) throws ClauNoSuportada {
+        try {
+            int num = convertirClauAInt(clau);
+            if (num < 0 || num > 40) {
+                throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+            }
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("Clau de RotX ha de ser un sencer de 0 a 40");
+        }
+    }
+
+    private int convertirClauAInt(String clau) throws NumberFormatException {
+        return Integer.parseInt(clau);
     }
 
 }
