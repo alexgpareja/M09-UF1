@@ -1,0 +1,11 @@
+{
+  "java.project.sourcePaths": [
+    "06_Factory",
+    "05_XifratAES",
+    "04_Polialfabetic",
+    "03_Monoalfabetic",
+    "02_RotX",
+    "01_Rot13",
+    "07_public_key/xifratge/src/main/java/iticbcn/xifratge"
+  ]
+}
